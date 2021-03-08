@@ -8,6 +8,7 @@ CREATE TABLE `credit_card_db`.`credit_cards` (
 
 CREATE TABLE `credit_card_db`.`credit_cards_queue` (
   `credit_card_number` INT NOT NULL,
+  `date_time_added` INT NOT NULL,
   PRIMARY KEY (`idcredit_cards_queue`));
 
 CREATE TABLE `credit_card_db`.`countries` (

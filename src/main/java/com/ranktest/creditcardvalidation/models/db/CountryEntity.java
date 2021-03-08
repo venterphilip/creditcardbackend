@@ -7,12 +7,14 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "countries")
-public class Country {
+public class CountryEntity {
 
     @Id
     private String countryCode;
+
     @Column(name = "country_name")
     private String countryName;
+
     @Column(name = "banned")
     private boolean banned;
 

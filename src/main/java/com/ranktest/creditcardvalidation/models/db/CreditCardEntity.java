@@ -7,12 +7,12 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "credit_cards")
-public class CreditCard {
+public class CreditCardEntity {
 
     @Id
     private String cardNumber;
     @Column(name = "date_time_added")
-    private int dateTimeAdded;
+    private long dateTimeAdded;
     @Column(name = "country")
     private String country;
 
@@ -33,11 +33,11 @@ public class CreditCard {
         this.cardNumber = cardNumber;
     }
 
-    public int getDateTimeAdded() {
+    public long getDateTimeAdded() {
         return dateTimeAdded;
     }
 
-    public void setDateTimeAdded(int dateTimeAdded) {
+    public void setDateTimeAdded(long dateTimeAdded) {
         this.dateTimeAdded = dateTimeAdded;
     }
 
