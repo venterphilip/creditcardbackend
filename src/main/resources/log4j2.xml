@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Configuration status="INFO">
+    <Appenders>
+        <Console name="console" target="SYSTEM_OUT">
+            <Patternlayout pattern="%d: %6p : [SID:%X{sessionId} RQID:%X{requestId}] : [%c{1}] : %m %n"/>
+        </Console>
+    </Appenders>
+    <Loggers>
+
+        <Root level="INFO">
+            <Appenderref ref="console"/>
+        </Root>
+
+    </Loggers>
+</Configuration>
