@@ -26,17 +26,17 @@ public class CountriesService {
         }
     }
 
-    public List<CountryEntity> getAllBannedCountries(){
+    public List<String> getAllBannedCountries(){
 
         List<CountryEntity> countries = repository.findAll();
 
         if(countries.size()>0){
 
-            List<CountryEntity> bannedCountries = new ArrayList<>();
+            List<String> bannedCountries = new ArrayList<>();
 
             for (CountryEntity country : countries) {
                 if(country.isBanned()){
-                    bannedCountries.add(country);
+                    bannedCountries.add(country.getCountryCode());
                 }
             }
 

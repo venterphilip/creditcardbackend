@@ -3,6 +3,7 @@ package com.ranktest.creditcardvalidation.scheduler;
 import com.ranktest.creditcardvalidation.datasources.DataSourceFactory;
 import com.ranktest.creditcardvalidation.models.card.validation.CardValidationResponse;
 import com.ranktest.creditcardvalidation.models.db.CountryEntity;
+import com.ranktest.creditcardvalidation.models.db.CreditCardEntity;
 import com.ranktest.creditcardvalidation.models.db.CreditCardQueueEntity;
 import com.ranktest.creditcardvalidation.services.dbservices.CountriesService;
 import com.ranktest.creditcardvalidation.services.dbservices.CreditCardQueueService;
@@ -48,13 +49,44 @@ public class CreditCardScheduler {
     }
 
     private void handleBatchJob(List<CreditCardQueueEntity> creditCardQueueEntities){
-        List<CountryEntity> bannedCountries = countriesService.getAllBannedCountries();
+        List<String> bannedCountries = countriesService.getAllBannedCountries();
 
-        for (CreditCardQueueEntity item : creditCardQueueEntities){
-            CardValidationResponse response = dataSourceFactory.getRestDataSourceFactory().getCardValidityFromAPI(item.getCardNumber());
-            LOG.info(String.format("Response from server: [%s]", response.toString() ));
+        try{
 
-            //if(Banned)
+            for (CreditCardQueueEntity item : creditCardQueueEntities){
+                CardValidationResponse response = dataSourceFactory.getRestDataSourceFactory().getCardValidityFromAPI(item.getCardNumber());
+                LOG.info(String.format("Response from server: [%s]", response.toString() ));
+
+                if(bannedCountries.contains(response.getCountry().getAlpha2())){
+                    LOG.info("Country is banned");
+                    continue;
+                }
+
+                if(!response.getNumber().isLuhn()){
+                    LOG.info("card number invalid");
+                    creditCardQueueService.removeCreditCardQueueItem(item.getCardNumber());
+                    continue;
+                }
+
+                LOG.info("Passed all checks - adding card to db " + item.getCardNumber());
+
+                addCCtoDB(item.getCardNumber(), response.getCountry().getAlpha2());
+                creditCardQueueService.removeCreditCardQueueItem(item.getCardNumber());
+            }
+
+        } catch (Exception e){
+            LOG.error("Something went wrong with batch job: " + e, e);
         }
     }
+
+    private void addCCtoDB(String cardNumber, String country){
+
+        CreditCardEntity entity = new CreditCardEntity();
+        entity.setDateTimeAdded(System.currentTimeMillis());
+        entity.setCountry(country);
+        entity.setCardNumber(cardNumber);
+
+        creditCardService.addCreditCard(entity);
+    }
+
 }

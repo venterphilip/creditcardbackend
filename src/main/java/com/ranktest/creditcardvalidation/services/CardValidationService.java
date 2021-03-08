@@ -32,6 +32,7 @@ public class CardValidationService {
     public boolean isCardValid(CreditCard creditCard) {
 
         if(!basicCardValidation(creditCard.getCardNumber())){
+            LOG.info("Failed basic validation");
             return false;
         }
 
