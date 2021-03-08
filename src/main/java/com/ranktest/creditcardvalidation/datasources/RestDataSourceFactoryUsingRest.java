@@ -26,8 +26,8 @@ public class RestDataSourceFactoryUsingRest implements RestDataSourceFactory {
     }
 
     @Override
-    public CardValidationResponse getCardValidityFromAPI(CreditCard card) {
-        String url = baseUrl + card.getCardNumber();
+    public CardValidationResponse getCardValidityFromAPI(String cardNumber) {
+        String url = baseUrl + cardNumber;
         LOG.info(String.format("Calling cardbin for details on card: [%s]", url));
         return template.getForObject(url, CardValidationResponse.class);
     }
