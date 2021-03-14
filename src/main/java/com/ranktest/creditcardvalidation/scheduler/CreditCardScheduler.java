@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.List;
 
@@ -54,7 +55,15 @@ public class CreditCardScheduler {
         try{
 
             for (CreditCardQueueEntity item : creditCardQueueEntities){
-                CardValidationResponse response = dataSourceFactory.getRestDataSourceFactory().getCardValidityFromAPI(item.getCardNumber());
+                CardValidationResponse response = new CardValidationResponse();
+                try{
+                    response = dataSourceFactory.getRestDataSourceFactory().getCardValidityFromAPI(item.getCardNumber());
+                } catch (HttpClientErrorException e){
+                    LOG.error("No response - meaning that card is invalid - removing card from queue");
+                    creditCardQueueService.removeCreditCardQueueItem(item.getCardNumber());
+                    continue;
+                }
+
                 LOG.info(String.format("Response from server: [%s]", response.toString() ));
 
                 if(bannedCountries.contains(response.getCountry().getAlpha2())){

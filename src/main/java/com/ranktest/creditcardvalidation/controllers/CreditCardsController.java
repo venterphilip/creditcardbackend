@@ -9,14 +9,12 @@ import com.ranktest.creditcardvalidation.services.dbservices.CreditCardService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 public class CreditCardsController {
 
     private static final Logger LOG = LoggerFactory.getLogger(CreditCardsController.class);
@@ -33,9 +31,11 @@ public class CreditCardsController {
         this.cardService = cardService;
     }
 
-    @PostMapping("/load/card")
+    @PostMapping("/card/load")
     public String loadCard(@RequestBody CreditCard creditCard) {
         LOG.info(String.format("Incoming request: [%s]",creditCard));
+
+
 
         return "is card valid: " + cardValidationService.isCardValid(creditCard);
     }
