@@ -50,13 +50,11 @@ public class CountriesService {
     public CountryEntity updateCountryBannedStatus(CountryEntity entity){
 
         if(entity.getCountryCode()!=null) {
-            Optional<CountryEntity> country = repository.findById(entity.getCountryName());
+            Optional<CountryEntity> country = repository.findById(entity.getCountryCode());
 
             if(country.isPresent()){
                 CountryEntity newEntity = country.get();
                 newEntity.setBanned(entity.isBanned());
-                newEntity.setCountryCode(entity.getCountryCode());
-                newEntity.setCountryName(entity.getCountryName());
                 newEntity = repository.save(newEntity);
 
                 return newEntity;
