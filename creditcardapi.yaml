@@ -1,0 +1,159 @@
+openapi: 3.0.0
+
+info:
+
+  title: credit card backend swagger doc
+  
+  description: card validation backend
+  
+  version: v1
+    
+paths:
+  /card/load:
+    post:
+      summary: load new credit card
+      description: call this with card number to be validated and added to queue
+      tags:
+        - card
+      requestBody:
+        description: Credit card number information
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                creditCard:
+                  type: object
+                  properties: 
+                    cardNumber: 
+                      type: string
+                      example: "4566456645666456"
+                      description: needs to be 16 characters and only numbers
+        required: true
+      responses:
+        '200':
+          description: has been added to queue
+        '400':
+          description: failed basic validation
+          
+  /card:
+    get:
+      summary: get all valid credit cards
+      description: gets a list of all valid credit cards that have been validated
+      tags:
+        - card
+      responses:
+        '200':
+          description: has been added to queue
+          content:
+            application/json:
+              schema: 
+                type: array
+                items: 
+                  type: object
+                  properties: 
+                    cardNumber:
+                      type: string
+                      example: "4657465746574657"
+                    dateTimeAdded:
+                      type: number
+                      example: 56448946541
+                    country:
+                      type: string
+                      example: "ZA"
+                      
+  /card/queue:
+    get:
+      summary: get all credit cards in queue
+      description: get all credit cards in queue table
+      tags:
+        - card
+      responses:
+        '200':
+          description: has been added to queue
+          content:
+            application/json:
+              schema: 
+                type: array
+                items: 
+                  type: object
+                  properties: 
+                    cardNumber:
+                      type: string
+                      example: "4657465746574657"
+                    dateTimeAdded:
+                      type: number
+                      example: 56448946541
+                      
+  /country/ban/{countryCode}/{banValue}:
+    post:
+      summary: change banned status of country
+      description: call this to change banned status of country code
+      tags:
+        - country
+      parameters:
+        - in: path
+          name: countryCode   # 
+          required: true
+          schema:
+            type: string
+            example: "ZA"
+          description: CountryCode
+        - in: path
+          name: banValue   # 
+          required: true
+          schema:
+            type: boolean
+            example: true
+          description: true/false for ban unban
+      responses:
+        '200':
+          description: Updated list of countries
+          content:
+            application/json:
+              schema: 
+                type: array
+                items: 
+                  type: object
+                  properties: 
+                    countryCode:
+                      type: string
+                      example: "ZA"
+                    countryName:
+                      type: string
+                      example: "South Africa"
+                    banned:
+                      type: boolean
+                      example: true
+                      
+  /country:
+    get:
+      summary: get all countries
+      tags:
+        - country
+      description: get all countries
+      responses:
+        '200':
+          description: list of countries
+          content:
+            application/json:
+              schema: 
+                type: array
+                items: 
+                  type: object
+                  properties: 
+                    countryCode:
+                      type: string
+                      example: "ZA"
+                    countryName:
+                      type: string
+                      example: "South Africa"
+                    banned:
+                      type: boolean
+                      example: true
+                      
+tags:
+  - name: card
+    description: Card API calls
+  - name: country
+    description: Country API calls
