@@ -17,11 +17,21 @@ public class CountriesController {
 
     private CountriesService service;
 
+    /**
+     * Contructor
+     * @param countriesService
+     */
     @Autowired
     public CountriesController(CountriesService countriesService){
         this.service = countriesService;
     }
 
+    /**
+     * Sets banned to banValue in countries table
+     * @param countryCode
+     * @param banValue
+     * @return updated list of CountryEntity
+     */
     @PostMapping("/country/ban/{countryCode}/{banValue}")
     public List<CountryEntity> loadCard(@PathVariable("countryCode") String countryCode, @PathVariable("banValue") boolean banValue) {
         LOG.info(String.format("Request to change [%S] to value [%s]",countryCode, banValue));
@@ -35,6 +45,10 @@ public class CountriesController {
         return service.getAlCountries();
     }
 
+    /**
+     * Gets all entries in countries table
+     * @return list of CountryEntity
+     */
     @GetMapping("/country")
     public List<CountryEntity> getCardQueue() {
         LOG.info("get Card queue request");

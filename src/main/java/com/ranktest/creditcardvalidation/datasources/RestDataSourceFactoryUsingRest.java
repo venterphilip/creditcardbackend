@@ -1,6 +1,5 @@
 package com.ranktest.creditcardvalidation.datasources;
 
-import com.ranktest.creditcardvalidation.models.CreditCard;
 import com.ranktest.creditcardvalidation.models.card.validation.CardValidationResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +24,11 @@ public class RestDataSourceFactoryUsingRest implements RestDataSourceFactory {
         this.template = template;
     }
 
+    /**
+     * Rest request to cardbin api
+     * @param cardNumber
+     * @return CardValidationResponse object
+     */
     @Override
     public CardValidationResponse getCardValidityFromAPI(String cardNumber) {
         String url = baseUrl + cardNumber;

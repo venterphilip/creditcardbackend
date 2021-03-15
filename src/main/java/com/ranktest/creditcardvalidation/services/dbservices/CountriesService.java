@@ -15,6 +15,10 @@ public class CountriesService {
     @Autowired
     private CountryRepository repository;
 
+    /**
+     * Gets all countries from DB
+     * @return list of countries
+     */
     public List<CountryEntity> getAlCountries(){
 
         List<CountryEntity> countries = repository.findAll();
@@ -26,6 +30,10 @@ public class CountriesService {
         }
     }
 
+    /**
+     * Gets all banned countries from db
+     * @return list of banned countries
+     */
     public List<String> getAllBannedCountries(){
 
         List<CountryEntity> countries = repository.findAll();
@@ -47,6 +55,11 @@ public class CountriesService {
 
     }
 
+    /**
+     * updates country - either to banned is false or banned is true
+     * @param entity
+     * @return updated country entity
+     */
     public CountryEntity updateCountryBannedStatus(CountryEntity entity){
 
         if(entity.getCountryCode()!=null) {

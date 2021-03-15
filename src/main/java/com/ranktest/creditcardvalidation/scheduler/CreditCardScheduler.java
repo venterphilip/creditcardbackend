@@ -2,7 +2,6 @@ package com.ranktest.creditcardvalidation.scheduler;
 
 import com.ranktest.creditcardvalidation.datasources.DataSourceFactory;
 import com.ranktest.creditcardvalidation.models.card.validation.CardValidationResponse;
-import com.ranktest.creditcardvalidation.models.db.CountryEntity;
 import com.ranktest.creditcardvalidation.models.db.CreditCardEntity;
 import com.ranktest.creditcardvalidation.models.db.CreditCardQueueEntity;
 import com.ranktest.creditcardvalidation.services.dbservices.CountriesService;
@@ -36,6 +35,11 @@ public class CreditCardScheduler {
         this.dataSourceFactory = dataSourceFactory;
     }
 
+    /**
+     * CreditCardQueue scheduler runs every thirty seconds
+     * does up to 5 requests to cardbin
+     * checks card_queue table for items
+     */
     @Scheduled(fixedRate = 30000)
     public void scheduledCreditCardBatchJob() {
         LOG.info(String.format("Credit card Batch every 30 seconds: [%d]",System.currentTimeMillis() / 1000));
@@ -49,6 +53,11 @@ public class CreditCardScheduler {
         }
     }
 
+    /**
+     * If card is invalid remove from queue,
+     * if card is valid add to credit_card table
+     * @param creditCardQueueEntities
+     */
     private void handleBatchJob(List<CreditCardQueueEntity> creditCardQueueEntities){
         List<String> bannedCountries = countriesService.getAllBannedCountries();
 
@@ -88,6 +97,11 @@ public class CreditCardScheduler {
         }
     }
 
+    /**
+     * Does request to db to add card after validation
+     * @param cardNumber
+     * @param country
+     */
     private void addCCtoDB(String cardNumber, String country){
 
         CreditCardEntity entity = new CreditCardEntity();

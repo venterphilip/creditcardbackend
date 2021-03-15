@@ -14,6 +14,10 @@ public class CreditCardQueueService {
     @Autowired
     private CreditCardQueueRepository repository;
 
+    /**
+     * gets all credit cards from queue table
+     * @return list of credit cards in queue
+     */
     public List<CreditCardQueueEntity> getAllCreditCardsInQueue(){
         List<CreditCardQueueEntity> creditCards = repository.findAll();
 
@@ -24,6 +28,10 @@ public class CreditCardQueueService {
         }
     }
 
+    /**
+     * filters to get 5 cards in queue
+     * @return list of 5 cards in queue table
+     */
     public List<CreditCardQueueEntity> getTopFiveCardsInQueue(){
         List<CreditCardQueueEntity> creditCards = repository.findAll();
 
@@ -47,6 +55,11 @@ public class CreditCardQueueService {
         }
     }
 
+    /**
+     * adds credit card to queue
+     * @param entity
+     * @return credit card entity
+     */
     public CreditCardQueueEntity addCreditCardQueueItem(CreditCardQueueEntity entity){
         if(entity.getCardNumber()!=null) {
             Optional<CreditCardQueueEntity> creditCardQueueEntity = repository.findById(entity.getCardNumber());
@@ -70,6 +83,10 @@ public class CreditCardQueueService {
         }
     }
 
+    /**
+     * remove card from queue table
+     * @param cardNumber
+     */
     public void removeCreditCardQueueItem(String cardNumber){
         Optional<CreditCardQueueEntity> cardQueueEntity = repository.findById(cardNumber);
 
@@ -80,6 +97,11 @@ public class CreditCardQueueService {
         }
     }
 
+    /**
+     * get spesific card in table
+     * @param cardNumber
+     * @return single credit card
+     */
     public CreditCardQueueEntity getCreditCard(String cardNumber){
         Optional<CreditCardQueueEntity> cardQueueEntity = repository.findById(cardNumber);
 

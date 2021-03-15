@@ -14,6 +14,10 @@ public class CreditCardService {
     @Autowired
     private CreditCardRepository repository;
 
+    /**
+     * gets all valid credit cards from table
+     * @return list of credit cards
+     */
     public List<CreditCardEntity> getAllCreditCards(){
         List<CreditCardEntity> creditCards = repository.findAll();
 
@@ -24,6 +28,11 @@ public class CreditCardService {
         }
     }
 
+    /**
+     * adds credit card to table
+     * @param entity
+     * @return credit card added to table
+     */
     public CreditCardEntity addCreditCard(CreditCardEntity entity){
         if(entity.getCardNumber()!=null) {
             Optional<CreditCardEntity> creditCard = repository.findById(entity.getCardNumber());
@@ -47,6 +56,10 @@ public class CreditCardService {
         }
     }
 
+    /**
+     * remove credit card from table
+     * @param cardNumber
+     */
     public void removeCreditCard(String cardNumber){
         Optional<CreditCardEntity> cardQueueEntity = repository.findById(cardNumber);
 
@@ -57,6 +70,11 @@ public class CreditCardService {
         }
     }
 
+    /**
+     * get spesific credit card info
+     * @param cardNumber
+     * @return credit card entity
+     */
     public CreditCardEntity getCreditCard(String cardNumber){
         Optional<CreditCardEntity> cardEntity = repository.findById(cardNumber);
 
